@@ -76,12 +76,24 @@ def criar_conta(agencia,numero_conta,usuarios):
     else:
         print("Usuário não encontrado!")
 
+def listar_contas(contas):
+    print("Contas existentes: ")
+    for conta in contas:
+        linha = f"""\
+            Agência:\t{conta['agencia']}
+            C/C:\t\t{conta['numero_conta']}
+            Titular:\t{conta['usuario']['nome']}
+        """
+        #pega informações relacionadas a conta lançadas com método criar_conta
+        print(linha)
+
 def main():
     saldo = 0.0
     limite = 500.00
     limite_saques = 3
     extrato = []
     usuarios = []
+    contas = []
     AGENCIA = "0001"
     MENU = """
         Bem vindo(a)! Selecione o comando de sua ação:
@@ -90,7 +102,10 @@ def main():
         [2] Sacar
         [3] Depositar
         [4] Gerar extrato
-        [5] Sair
+        [5] Criar usuário
+        [6] Criar conta
+        [7] Listar contas
+        [8] Sair
     """
 
     while True:
@@ -108,9 +123,19 @@ def main():
             saldo, extrato = depositar(saldo,extrato)
         elif opc == 4:
             gerar_extrato(extrato=extrato)
-        elif opc == 5:
+        elif opc == 8:
             print("Saindo...")
             break
+        elif opc == 5:
+            criar_usuario(usuarios)
+        elif opc == 6:
+            numero_conta = len(contas) + 1
+            conta = criar_conta(AGENCIA,numero_conta,usuarios)
+
+            if conta:
+                contas.append(conta)
+        elif opc == 7:
+            listar_contas(contas)
         else:
             print("Comando inválido")
 
